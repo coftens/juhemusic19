@@ -13,6 +13,22 @@ class NowPlayingPage extends StatefulWidget {
 
   final SearchItem? item;
 
+  static bool _isNavigating = false;
+
+  static Future<void> push(BuildContext context, {SearchItem? item}) async {
+    if (_isNavigating) return;
+    _isNavigating = true;
+    try {
+      await Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => NowPlayingPage(item: item)),
+      );
+    } finally {
+      // Small delay to prevent double-tap during pop transition
+      await Future.delayed(const Duration(milliseconds: 300));
+      _isNavigating = false;
+    }
+  }
+
   @override
   State<NowPlayingPage> createState() => _NowPlayingPageState();
 }

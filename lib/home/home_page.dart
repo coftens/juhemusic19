@@ -285,7 +285,7 @@ class _RecPageContent extends StatelessWidget {
                     await PlayerService.instance.playItem(clickedItem);
                     
                     if (!context.mounted) return;
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => NowPlayingPage(item: clickedItem)));
+                    NowPlayingPage.push(context, item: clickedItem);
                   } catch (e) {
                     if (!context.mounted) return;
                     Navigator.of(context).pop();
@@ -423,9 +423,9 @@ class _TopTabs extends StatelessWidget {
                      // 心动: 保持原有逻辑
                      final cur = svc.current;
                      if (cur != null) {
-                       Navigator.of(context).push(MaterialPageRoute(builder: (_) => NowPlayingPage(item: cur)));
+                       NowPlayingPage.push(context, item: cur);
                      } else {
-                       Navigator.of(context).push(MaterialPageRoute(builder: (_) => const NowPlayingPage()));
+                       NowPlayingPage.push(context);
                      }
                   } else {
                     onTabChanged(i);

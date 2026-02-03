@@ -129,7 +129,7 @@ class _MePageState extends State<MePage> {
   void _playFrom(List<SearchItem> list, int index) {
     if (index < 0 || index >= list.length) return;
     _svc.setQueue(list, startIndex: index);
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => NowPlayingPage(item: list[index])));
+    NowPlayingPage.push(context, item: list[index]);
   }
 
   double _sheetRadius = 18.0;

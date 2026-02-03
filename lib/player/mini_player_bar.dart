@@ -40,13 +40,7 @@ class MiniPlayerBar extends StatelessWidget {
                 shadowColor: Colors.black.withOpacity(0.18),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(24),
-                  onTap: () {
-                    if (_isNavigating) return;
-                    _isNavigating = true;
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => NowPlayingPage(item: it)),
-                    ).then((_) => _isNavigating = false);
-                  },
+                  onTap: () => NowPlayingPage.push(context, item: it),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

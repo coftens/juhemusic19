@@ -282,7 +282,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     onPressed: _queue.isEmpty
                         ? null
                         : () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (_) => NowPlayingPage(item: _queue[0])));
+                            NowPlayingPage.push(context, item: _queue[0]);
                             Future.microtask(() async {
                               final source = widget.id == 'daily_recommend' ? QueueSource.dailyRecommend : QueueSource.playlist;
                               await _svc.initQueueFromSource(source: source, playlistId: widget.id, initialItems: _queue);
@@ -345,7 +345,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   subtitleTextStyle: t.bodyMedium?.copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
                   trailing: const Icon(Icons.play_arrow_rounded, color: Colors.black38),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => NowPlayingPage(item: item)));
+                    NowPlayingPage.push(context, item: item);
                     // v5.0: 使用新的歌单队列初始化方法
                     Future.microtask(() async {
                       final source = widget.id == 'daily_recommend' ? QueueSource.dailyRecommend : QueueSource.playlist;

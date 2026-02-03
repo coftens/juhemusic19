@@ -211,7 +211,7 @@ class _LibraryPlaylistPageState extends State<LibraryPlaylistPage> {
                     onPressed: widget.items.isEmpty
                         ? null
                         : () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (_) => NowPlayingPage(item: widget.items[0])));
+                             NowPlayingPage.push(context, item: widget.items[0]);
                             Future.microtask(() {
                               _svc.replaceQueueAndPlay(widget.items, startIndex: 0);
                             });
@@ -256,7 +256,7 @@ class _LibraryPlaylistPageState extends State<LibraryPlaylistPage> {
                   subtitleTextStyle: t.bodyMedium?.copyWith(color: Colors.black54, fontWeight: FontWeight.w600),
                   trailing: const Icon(Icons.play_arrow_rounded, color: Colors.black38),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => NowPlayingPage(item: s)));
+                    NowPlayingPage.push(context, item: s);
                     Future.microtask(() {
                       _svc.replaceQueueAndPlay(widget.items, startIndex: i);
                     });

@@ -68,7 +68,7 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
     startIndex = startIndex.clamp(0, q.length - 1);
     await PlayerService.instance.replaceQueueAndPlay(q, startIndex: startIndex);
     if (!mounted) return;
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => NowPlayingPage(item: q[startIndex])));
+    NowPlayingPage.push(context, item: q[startIndex]);
   }
 
   @override
@@ -319,7 +319,7 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                                 final svc = PlayerService.instance;
                                 final old = svc.snapshotQueue();
                                 svc.insertAsNextThenPlay(_results[i], old);
-                                Navigator.of(context).push(MaterialPageRoute(builder: (_) => NowPlayingPage(item: _results[i])));
+                                NowPlayingPage.push(context, item: _results[i]);
                               },
                             )
                           : ListView(

@@ -174,11 +174,13 @@ class _MePageState extends State<MePage> {
                 const SizedBox(height: 8),
                 // Profile section with scaling animation
                 Builder(builder: (context) {
-                  // Scale from 1.0 (sheet at min 0.38) to 0.7 (sheet at max 1.0)
-                  final scale = 1.0 - ((_sheetExtent - 0.38) / (1.0 - 0.38)) * 0.3;
-                  final opacity = scale.clamp(0.0, 1.0);
+                  // Scale from 1.4 (sheet at min 0.38) to 0.7 (sheet at max 1.0)
+                  // This creates a larger scale when sheet is down
+                  final t0 = (_sheetExtent - 0.38) / (1.0 - 0.38); // 0 to 1
+                  final scale = 1.4 - t0 * 0.7; // 1.4 -> 0.7
+                  final opacity = (1.0 - t0 * 0.3).clamp(0.0, 1.0); // slight fade
                   return Transform.scale(
-                    scale: scale.clamp(0.7, 1.0),
+                    scale: scale.clamp(0.7, 1.4),
                     child: Opacity(
                       opacity: opacity,
                       child: Column(

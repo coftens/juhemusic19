@@ -156,8 +156,8 @@ class UserLibrary {
           'platform': it.platform,
           'name': it.name,
           'artist': it.artist,
-          'shareUrl': it.shareUrl,
-          'coverUrl': it.coverUrl,
+          'share_url': it.shareUrl,
+          'cover_url': it.coverUrl,
         }
     ];
     return jsonEncode(arr);

@@ -5,26 +5,26 @@ class SearchPageRoute extends PageRouteBuilder {
 
   SearchPageRoute({required this.child})
       : super(
+          opaque: false, // Critical for BackdropFilter to work on the underlying page
           pageBuilder: (context, animation, secondaryAnimation) => child,
-          transitionDuration: const Duration(milliseconds: 350),
-          reverseTransitionDuration: const Duration(milliseconds: 300),
+          transitionDuration: const Duration(milliseconds: 300),
+          reverseTransitionDuration: const Duration(milliseconds: 250),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            // Curve the animation
-            final curvedAnimation = CurvedAnimation(
+            final curve = CurvedAnimation(
               parent: animation,
-              curve: Curves.easeOutCubic,
-              reverseCurve: Curves.easeInCubic,
+              curve: Curves.easeOutQuart,
+              reverseCurve: Curves.easeInQuart,
             );
 
-            // Scale from top-right
-            // Alignment(1.0, -1.0) represents the exact top-right corner.
-            // We can adjust this slightly if the buttom is not exactly in the corner,
-            // but (0.9, -0.9) is usually a good approximation for a top-right action button padding.
-            return ScaleTransition(
-              scale: Tween<double>(begin: 0.0, end: 1.0).animate(curvedAnimation),
-              alignment: const Alignment(0.9, -0.95), 
+            // A subtle slide from bottom (5% of screen height) combine with fade
+            // This feels like a "dialog" or "overlay" appearing elegantly.
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.05), 
+                end: Offset.zero,
+              ).animate(curve),
               child: FadeTransition(
-                opacity: curvedAnimation,
+                opacity: curve,
                 child: child,
               ),
             );

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/php_api_client.dart';
@@ -155,7 +156,21 @@ class PlayerService extends ChangeNotifier {
   Duration get position => _player?.position ?? _savedPosition;
   Duration get duration => _player?.duration ?? _savedDuration;
 
-  Stream<Duration> get positionStream => _player?.positionStream ?? Stream<Duration>.empty();
+  Stream<Duration> get positionStream {
+    if (_player == null) return Stream.value(Duration.zero);
+    return Rx.combineLatest2<Duration, PlayerState, Duration?>(
+      _player!.positionStream,
+      _player!.playerStateStream,
+      (pos, state) {
+        // 在缓冲或加载时，不更新进度，防止界面/歌词跑在音频前面
+        if (state.processingState == ProcessingState.buffering ||
+            state.processingState == ProcessingState.loading) {
+          return null;
+        }
+        return pos;
+      },
+    ).whereType<Duration>();
+  }
   Stream<PlayerState> get playerStateStream => _player?.playerStateStream ?? Stream<PlayerState>.empty();
 
   bool get hasPrev => _order.isNotEmpty && _orderPos > 0;

@@ -160,7 +160,9 @@ class PlayerService extends ChangeNotifier {
 
   bool get hasPrev => _order.isNotEmpty && _orderPos > 0;
   bool get hasNext => _order.isNotEmpty && _orderPos < _order.length - 1;
-  bool get isBuffering => _buffering;
+  // 直接从 player 状态获取，确保实时性
+  bool get isBuffering => _player?.processingState == ProcessingState.buffering || 
+                          _player?.processingState == ProcessingState.loading;
 
   List<SearchItem> get queue => List.unmodifiable(_queue);
   int get index => _index;
@@ -236,6 +238,11 @@ class PlayerService extends ChangeNotifier {
   void _onPlayerState(PlayerState s) {
     notifyListeners();
     print('PlayerState changed: processingState=${s.processingState}, playing=${s.playing}');
+    
+    // 更新本地缓冲状态变量 (虽然 getter 改为直接获取，但保留变量以防万一)
+    _buffering = s.processingState == ProcessingState.buffering || 
+                 s.processingState == ProcessingState.loading;
+                 
     if (s.processingState == ProcessingState.completed) {
       unawaited(_handleTrackCompleted());
     }
